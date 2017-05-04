@@ -3,6 +3,7 @@ var record 	   = [];
 var routes	   = [];
 var rtDist	   = [];
 
+var fps				= 60;
 var cityCount 		= 12;
 var genePool 		= 5000;
 var evolutionRate 	= 0.01;
@@ -11,7 +12,6 @@ var drawing = {
 	w: 650,
 	h: 430
 };
-drawing.d = drawing.w^2 + drawing.h^2;
 
 record.route = [];
 record.dist  = Infinity;
@@ -30,7 +30,7 @@ record.lexDist  = Infinity;
 
 function setup() {
   createCanvas(drawing.w, drawing.h);
-  
+  frameRate(fps);
   //Create n Random Cities
   var route = [];
   for (var i = 0; i < cityCount; i++){
@@ -54,7 +54,6 @@ function setup() {
 
 function draw() {
   background(51);
-  
   //Genetic Algorithm
   calcRouteDistance();
   normalizeRouteDistance();
