@@ -9,6 +9,9 @@ function togglePause(){
 }
 
 function restart(){
+	
+	document.getElementById("tp").firstChild.nodeValue = "Pause";
+	
 	cities 	   = [];
 	record 	   = [];
  	routes	   = [];
@@ -16,6 +19,7 @@ function restart(){
 
 	record.route = [];
 	record.dist  = Infinity;
+	record.time  = 0;
 	record.cRoute= [];
 	record.cDist = Infinity;
 
@@ -25,11 +29,14 @@ function restart(){
 	croute      = [];
 	record.lexRoute = [];
 	record.lexDist  = Infinity;
+	record.lexTime  = 0;
 	
 	fps				= parseInt(document.getElementById("as").value);
 	cityCount 		= parseInt(document.getElementById("cc").value);
 	genePool 		= parseInt(document.getElementById("gp").value);
 	evolutionRate 	= parseInt(document.getElementById("er").value);
 
+	frameOffset = frameCount;
+	seconds = 0;
 	setup();
 }

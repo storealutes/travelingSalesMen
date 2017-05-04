@@ -4,6 +4,7 @@ function calcRouteDistance() {
 		rtDist[i] = calcDistance(cities, routes[i]);
 		if(rtDist[i] < record.dist){
 			record.dist = rtDist[i];
+			record.time = seconds;
 			recordRoute(routes[i], true);
 			console.log(record.dist);
 		}

@@ -3,9 +3,12 @@ var record 	   = [];
 var routes	   = [];
 var rtDist	   = [];
 
+var frameOffset = 0;
+var seconds = 0;
+
 var fps				= 60;
-var cityCount 		= 12;
-var genePool 		= 5000;
+var cityCount 		= 6;
+var genePool 		= 100;
 var evolutionRate 	= 0.01;
 
 var drawing = {
@@ -15,6 +18,7 @@ var drawing = {
 
 record.route = [];
 record.dist  = Infinity;
+record.time  = 0;
 record.cRoute= [];
 record.cDist = Infinity;
 
@@ -25,6 +29,7 @@ var countRoutes = 1;
 var croute      = [];
 record.lexRoute = [];
 record.lexDist  = Infinity;
+record.lexTime  = 0;
 
 
 
@@ -49,22 +54,18 @@ function setup() {
   lexRecordRoute(croute);
   
   totalRoutes = factorial(cityCount);
-  
+  loop();
 }
 
 function draw() {
   background(51);
+  seconds = (frameCount - frameOffset) / fps;
+  
   //Genetic Algorithm
   calcRouteDistance();
   normalizeRouteDistance();
   nextGeneration();
   
-  textSize(32);
-   fill(255);
-   noStroke();
-  text("Genetic", 5, 40);
-  textSize(15);
-  text("Record: "+record.dist, 5, 55);
   //Draw Cities
   fill(255);
   for (var i = 0; i < cities.length; i++){
@@ -95,21 +96,8 @@ function draw() {
    
    ////////////SCREEN DIVIDE////////////////
    translate(0, height / 2);
-   stroke (0, 0, 0);
-   strokeWeight(4);
-   noFill();
-   beginShape();
-   vertex(0, 0);
-   vertex(drawing.w, 0);
-   endShape();
    /////////////////////////////////////////
    
-   textSize(32);
-   fill(255);
-   noStroke();
-   text("Lex", 5, 40);
-   textSize(15);
-   text("Record: "+record.lexDist, 5, 55);
    //Draw Lex Cities
    	fill(255);
    	for (var i = 0; i < cities.length; i++){
@@ -141,8 +129,39 @@ function draw() {
    var d = calcDistance(cities, croute);
    if (d < record.lexDist){
 	   record.lexDist = d;
+	   record.lexTime = seconds;
 	   lexRecordRoute(croute);
    }
+   
+   push();
+   translate(0, -height / 2);
+   //Genetic Labels
+   textSize(32);
+   fill(255);
+   noStroke();
+  text("Genetic", 5, 40);
+  textSize(15);
+  text("Record: "+nf(record.dist, 0, 3), 5, 55);
+  text("Found In: "+nf(record.time,0, 2)+" Sec", 5, 70);
+  
+  //Divider
+  translate(0, height / 2);
+   stroke (0, 0, 0);
+   strokeWeight(4);
+   noFill();
+   beginShape();
+   vertex(0, 0);
+   vertex(drawing.w, 0);
+   endShape();
+   
+   //Lex Labels
+   textSize(32);
+   fill(255);
+   noStroke();
+   text("Lex", 5, 40);
+   textSize(15);
+   text("Record: "+nf(record.lexDist, 0, 3), 5, 55);
+   text("Found In: "+nf(record.lexTime, 0 ,2)+" Sec", 5, 70);
    
    var percent = 100 * (countRoutes / totalRoutes);
    textSize(15);
@@ -150,6 +169,7 @@ function draw() {
    noStroke();
    text(nf(percent, 0, 4) + "% compeleted", 5, height/2-5);
    
+   pop();
    nextRoute();
    
 }
